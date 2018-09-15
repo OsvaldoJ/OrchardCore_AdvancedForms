@@ -1,0 +1,4 @@
+C:\Users\kenney\source\repos\cms.app\OrchardCore.Mvc.HelloWorld\obj\Debug\netstandard2.0\HCMS.News.csprojAssemblyReference.cache
+C:\Users\kenney\source\repos\cms.app\OrchardCore.Mvc.HelloWorld\obj\Debug\netstandard2.0\HCMS.News.csproj.CoreCompileInputs.cache
+C:\Users\kenney\source\repos\cms.app\OrchardCore.Mvc.HelloWorld\obj\Debug\netstandard2.0\HCMS.News.AssemblyInfoInputs.cache
+C:\Users\kenney\source\repos\cms.app\OrchardCore.Mvc.HelloWorld\obj\Debug\netstandard2.0\HCMS.News.AssemblyInfo.cs

@@ -1,0 +1,9 @@
+C:\Users\kenney\source\repos\cms.app\HCMS.News\bin\Debug\netcoreapp2.1\HCMS.News.deps.json
+C:\Users\kenney\source\repos\cms.app\HCMS.News\bin\Debug\netcoreapp2.1\HCMS.News.dll
+C:\Users\kenney\source\repos\cms.app\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.csproj.CoreCompileInputs.cache
+C:\Users\kenney\source\repos\cms.app\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.AssemblyInfoInputs.cache
+C:\Users\kenney\source\repos\cms.app\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.AssemblyInfo.cs
+C:\Users\kenney\source\repos\cms.app\HCMS.News\bin\Debug\netcoreapp2.1\HCMS.News.pdb
+C:\Users\kenney\source\repos\cms.app\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.dll
+C:\Users\kenney\source\repos\cms.app\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.pdb
+C:\Users\kenney\source\repos\cms.app\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.csprojAssemblyReference.cache

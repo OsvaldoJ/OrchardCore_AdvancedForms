@@ -1,0 +1,147 @@
+﻿<link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+@*<link href="Assets/GetIMDB.css" rel="stylesheet">*@
+
+<div>
+    <h1>CivicPlus HCMS Articles</h1>
+    Connected to <a href="https://krakenreview.civicplus.com/app/leadershipreview">
+        Kraken Review Leadership Preview App
+    </a>
+    <br />
+    <br />
+    <div id="articlecount"></div>
+</div>
+
+<div id="root"></div>
+
+@*<script src="Assets/GetIMDB.js"></script>*@
+
+<script type="text/javascript">
+    const app = document.getElementById('root');
+    const articleCountdiv = document.getElementById('articlecount');
+
+    const container = document.createElement('div');
+    container.setAttribute('class', 'container');
+
+    app.appendChild(container);
+
+    var data = null;
+
+    GetAuthToken(authToken => {
+        
+        var request = new XMLHttpRequest();
+        request.withCredentials = true;
+
+        request.open("GET", "https://krakenreview.civicplus.com/api/content/leadershipreview/article");
+        // request.setRequestHeader("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjkxRkRENEVCRDYwNjMxNURFREI4MENEMDkzMERFRkZBMjFEREE2NkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJrZjNVNjlZR01WM3R1QXpRa3czdi1pSGRwbXMifQ.eyJuYmYiOjE1MzUyMjAyMzcsImV4cCI6MTUzNzgxMjIzNywiaXNzIjoiaHR0cHM6Ly9rcmFrZW5yZXZpZXcuY2l2aWNwbHVzLmNvbS9pZGVudGl0eS1zZXJ2ZXIiLCJhdWQiOlsiaHR0cHM6Ly9rcmFrZW5yZXZpZXcuY2l2aWNwbHVzLmNvbS9pZGVudGl0eS1zZXJ2ZXIvcmVzb3VyY2VzIiwic3F1aWRleC1hcGkiXSwiY2xpZW50X2lkIjoibGVhZGVyc2hpcHJldmlldzphbGV4YW1hdHQiLCJzY29wZSI6WyJzcXVpZGV4LWFwaSJdfQ.cBXhJtD4_8lmSqu2MkmhmPw9YzASstu0-QMt6__vbjRpOsBcrOLAHaFZZuvdhjHtG0PsDfjj9oV7sUYsr5-CxjwRPumFc4mgJtxJWZCKC4VMDWiPBpdDhABtiW4ab5e47Ly2bePQP_czmAzvPYc8h1XSPVJRtT8rPVk1cIfU3ap76ZVAGf_t7uXP0Op_ko23FBxhzzzscha7VWhN99ksFsr_YI8_5dLCmlQqBpugxcSKaRU1NG44QPFcm6VMsfxDbv1njXT7DtRp2j8FZ--4enYDLZ3W-R64kVkEA99djU8xXfO-2VGgt8VROh8vDN_eWXbpiNnmZ5vC_HiLgbesHQ");
+        request.setRequestHeader("Authorization", "Bearer " + authToken.toString());
+        request.setRequestHeader("Cache-Control", "no-cache");
+
+        request.onload = function () {
+
+            var onesProper = ['zero', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'nineth'];
+            var ones = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+
+            // Begin accessing JSON data here
+            var data = JSON.parse(this.response);
+
+            if (request.status >= 200 && request.status < 400) {
+
+                var articleCountstring = 'There are ' + ones[data.total] + ' articles currently in the HCMS. ';
+                const articleCountp = document.createElement('p');
+                articleCountp.textContent = articleCountstring;
+                articleCountdiv.appendChild(articleCountp);
+
+                for (var i = 0; i < data.items.length && i < 5; i++) {
+
+                    const card = document.createElement('div');
+                    card.setAttribute('class', 'card');
+
+                    var itemNumber = onesProper[i + 1];
+                    var itemName = data.items[i].data["name"]["en"];
+                    var creationDate = new Date(data.items[i].created).toDateString();
+                    var itemDetails = data.items[i].data["article"]["en"];
+
+                    var arcticleInfo = itemName;
+                    var createdOn = 'created on ' + creationDate;
+
+                    const h2 = document.createElement('h2');
+                    h2.textContent = arcticleInfo;
+
+                    const createdOnp = document.createElement('p');
+                    createdOnp.textContent = createdOn;
+
+                    const p = document.createElement('p');
+                    p.innerHTML = itemDetails;
+
+                    container.appendChild(card);
+                    card.appendChild(h2);
+                    card.appendChild(createdOnp);
+                    card.appendChild(p);
+                }
+
+            } else {
+                const errorMessage = document.createElement('marquee');
+                errorMessage.textContent = `Gah, it's not working!`;
+                app.appendChild(errorMessage);
+            }
+        }
+
+        request.send();
+    });
+
+    function GetAuthToken(callback) {
+
+        var data = "grant_type=client_credentials&scope=squidex-api&client_id=leadershipreview%3Aalexamatt&client_secret=2fGbuNcka0WJmCmnK%2FRU4VmaemBl0x004Q0Mml22C2E%3D";
+        var authToken;
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                callback(JSON.parse(this.responseText).access_token);
+            }
+        });
+
+        xhr.open("POST", "https://krakenreview.civicplus.com/identity-server/connect/token");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+
+        xhr.send(data);
+        return authToken;
+    }
+
+    function stripHTMLTags(str) {
+        if ((str === null) || (str === ''))
+            return false;
+        else
+            str = str.toString();
+        return str.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ');
+    }
+</script>
+
+<style>
+    img.fr-dii.fr-fil {
+        float: left !important;
+        margin: 5px 20px 5px 0 !important;
+        max-width: 300px !important;
+    }
+
+    #root {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        margin: 1rem;
+        border: 1px solid gray;
+        padding-left: 10px;
+    }
+        
+</style>
+

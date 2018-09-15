@@ -1,0 +1,92 @@
+﻿<link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+@*<link href="Assets/GetIMDB.css" rel="stylesheet">*@
+
+  <div>
+      <h1>Movies produced by Studio Ghibli</h1>
+      A Japanese animation film studio based in Tokyo Japan
+  </div>
+
+<div id="root"></div>
+
+@*<script src="Assets/GetIMDB.js"></script>*@
+
+<script type="text/javascript">
+    const app = document.getElementById('root');
+
+    const container = document.createElement('div');
+    container.setAttribute('class', 'container');
+        
+    app.appendChild(container);
+
+    var request = new XMLHttpRequest();
+    request.open('GET', 'https://ghibliapi.herokuapp.com/films', true);
+    request.onload = function () {
+
+        // Begin accessing JSON data here
+        var data = JSON.parse(this.response);
+        if (request.status >= 200 && request.status < 400) {
+            data.forEach(movie => {
+                const card = document.createElement('div');
+                card.setAttribute('class', 'card');
+
+                const h1 = document.createElement('h1');
+                h1.textContent = movie.title;
+
+                const p = document.createElement('p');
+                movie.description = movie.description.substring(0, 300);
+                p.textContent = `${movie.description}...`;
+
+                container.appendChild(card);
+                card.appendChild(h1);
+                card.appendChild(p);
+            });
+        } else {
+            const errorMessage = document.createElement('marquee');
+            errorMessage.textContent = `Gah, it's not working!`;
+            app.appendChild(errorMessage);
+        }
+    }
+
+    request.send();
+
+</script>
+
+<style>
+    #root {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        margin: 1rem;
+        border: 1px solid gray;
+    }
+</style>
+
+<script type="text/javascript">
+    //alert("Hello World");
+
+    var data = null;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            console.log(this.responseText);
+        }
+    });
+
+    xhr.open("GET", "https://krakenreview.civicplus.com/api/content/leadershipreview/article");
+    xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjkxRkRENEVCRDYwNjMxNURFREI4MENEMDkzMERFRkZBMjFEREE2NkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJrZjNVNjlZR01WM3R1QXpRa3czdi1pSGRwbXMifQ.eyJuYmYiOjE1MzUyMjAyMzcsImV4cCI6MTUzNzgxMjIzNywiaXNzIjoiaHR0cHM6Ly9rcmFrZW5yZXZpZXcuY2l2aWNwbHVzLmNvbS9pZGVudGl0eS1zZXJ2ZXIiLCJhdWQiOlsiaHR0cHM6Ly9rcmFrZW5yZXZpZXcuY2l2aWNwbHVzLmNvbS9pZGVudGl0eS1zZXJ2ZXIvcmVzb3VyY2VzIiwic3F1aWRleC1hcGkiXSwiY2xpZW50X2lkIjoibGVhZGVyc2hpcHJldmlldzphbGV4YW1hdHQiLCJzY29wZSI6WyJzcXVpZGV4LWFwaSJdfQ.cBXhJtD4_8lmSqu2MkmhmPw9YzASstu0-QMt6__vbjRpOsBcrOLAHaFZZuvdhjHtG0PsDfjj9oV7sUYsr5-CxjwRPumFc4mgJtxJWZCKC4VMDWiPBpdDhABtiW4ab5e47Ly2bePQP_czmAzvPYc8h1XSPVJRtT8rPVk1cIfU3ap76ZVAGf_t7uXP0Op_ko23FBxhzzzscha7VWhN99ksFsr_YI8_5dLCmlQqBpugxcSKaRU1NG44QPFcm6VMsfxDbv1njXT7DtRp2j8FZ--4enYDLZ3W-R64kVkEA99djU8xXfO-2VGgt8VROh8vDN_eWXbpiNnmZ5vC_HiLgbesHQ");
+    xhr.setRequestHeader("Cache-Control", "no-cache");
+    xhr.setRequestHeader("Postman-Token", "6dad6506-5edf-4fe3-96a3-4a28f3a340e3");
+
+    xhr.send(data);
+
+</script>
