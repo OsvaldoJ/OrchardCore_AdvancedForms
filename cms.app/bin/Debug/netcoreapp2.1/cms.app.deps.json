@@ -27,8 +27,7 @@
           "HCMS.News": "1.0.0",
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.NETCore.App": "2.1.0",
-          "OrchardCore.Application.Cms.Targets": "1.0.0-beta2-67846",
-          "OrchardCore.Mvc.HelloWorld": "1.0.0"
+          "OrchardCore.Application.Cms.Targets": "1.0.0-beta2-67846"
         },
         "runtime": {
           "cms.app.dll": {}
@@ -5679,18 +5678,6 @@
           "HCMS.News.dll": {}
         }
       },
-      "OrchardCore.Mvc.HelloWorld/1.0.0": {
-        "dependencies": {
-          "Microsoft.AspNetCore.Mvc": "2.2.0-preview1-35029",
-          "OrchardCore.Module.Targets": "1.0.0-beta2-67846"
-        },
-        "runtime": {
-          "OrchardCore.Mvc.HelloWorld.dll": {}
-        },
-        "compile": {
-          "OrchardCore.Mvc.HelloWorld.dll": {}
-        }
-      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "dependencies": {
           "Newtonsoft.Json": "11.0.2",
@@ -9486,11 +9473,6 @@
       "hashPath": "yessql.provider.sqlserver.1.0.0-beta-1215.nupkg.sha512"
     },
     "HCMS.News/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "OrchardCore.Mvc.HelloWorld/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

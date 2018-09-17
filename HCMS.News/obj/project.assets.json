@@ -7775,11 +7775,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kenney\\source\\repos\\cms.app\\HCMS.News\\HCMS.News.csproj",
+      "projectUniqueName": "C:\\Code\\Forms\\HCMS.News\\HCMS.News.csproj",
       "projectName": "HCMS.News",
-      "projectPath": "C:\\Users\\kenney\\source\\repos\\cms.app\\HCMS.News\\HCMS.News.csproj",
+      "projectPath": "C:\\Code\\Forms\\HCMS.News\\HCMS.News.csproj",
       "packagesPath": "C:\\Users\\kenney\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kenney\\source\\repos\\cms.app\\HCMS.News\\obj\\",
+      "outputPath": "C:\\Code\\Forms\\HCMS.News\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

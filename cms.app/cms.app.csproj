@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HCMS.News\HCMS.News.csproj" />
-    <ProjectReference Include="..\OrchardCore.Mvc.HelloWorld\OrchardCore.Mvc.HelloWorld.csproj" />
   </ItemGroup>
 
 </Project>

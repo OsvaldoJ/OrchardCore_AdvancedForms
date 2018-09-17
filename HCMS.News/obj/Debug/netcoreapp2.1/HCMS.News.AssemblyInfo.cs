@@ -12,14 +12,14 @@ using System;
 using System.Reflection;
 
 [assembly: OrchardCore.Modules.Manifest.ModuleMarkerAttribute("HCMS.News", "Module")]
-[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\Views\\HCMSNews\\Index.cshtml|C:\\Users\\kenney\\source\\repos\\cms.a" +
-    "pp\\HCMS.News\\Views\\HCMSNews\\Index.cshtml")]
-[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\Views\\HCMSNews\\Movies.cshtml|C:\\Users\\kenney\\source\\repos\\cms." +
-    "app\\HCMS.News\\Views\\HCMSNews\\Movies.cshtml")]
-[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\wwwroot\\Scripts\\GetIMDB.js|C:\\Users\\kenney\\source\\repos\\cms.ap" +
-    "p\\HCMS.News\\wwwroot\\Scripts\\GetIMDB.js")]
-[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\wwwroot\\Styles\\GetIMDB.css|C:\\Users\\kenney\\source\\repos\\cms.ap" +
-    "p\\HCMS.News\\wwwroot\\Styles\\GetIMDB.css")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\Views\\HCMSNews\\Index.cshtml|C:\\Code\\Forms\\HCMS.News\\Views\\HCMS" +
+    "News\\Index.cshtml")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\Views\\HCMSNews\\Movies.cshtml|C:\\Code\\Forms\\HCMS.News\\Views\\HCM" +
+    "SNews\\Movies.cshtml")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\wwwroot\\Scripts\\GetIMDB.js|C:\\Code\\Forms\\HCMS.News\\wwwroot\\Scr" +
+    "ipts\\GetIMDB.js")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\wwwroot\\Styles\\GetIMDB.css|C:\\Code\\Forms\\HCMS.News\\wwwroot\\Sty" +
+    "les\\GetIMDB.css")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("HCMS.News")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

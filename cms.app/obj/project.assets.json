@@ -7764,20 +7764,6 @@
         "runtime": {
           "bin/placeholder/HCMS.News.dll": {}
         }
-      },
-      "OrchardCore.Mvc.HelloWorld/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Microsoft.AspNetCore.Mvc": "(, )",
-          "OrchardCore.Module.Targets": "1.0.0-beta2-67846"
-        },
-        "compile": {
-          "bin/placeholder/OrchardCore.Mvc.HelloWorld.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/OrchardCore.Mvc.HelloWorld.dll": {}
-        }
       }
     }
   },
@@ -17516,11 +17502,6 @@
       "type": "project",
       "path": "../HCMS.News/HCMS.News.csproj",
       "msbuildProject": "../HCMS.News/HCMS.News.csproj"
-    },
-    "OrchardCore.Mvc.HelloWorld/1.0.0": {
-      "type": "project",
-      "path": "../OrchardCore.Mvc.HelloWorld/OrchardCore.Mvc.HelloWorld.csproj",
-      "msbuildProject": "../OrchardCore.Mvc.HelloWorld/OrchardCore.Mvc.HelloWorld.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -17528,8 +17509,7 @@
       "HCMS.News >= 1.0.0",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.NETCore.App >= 2.1.0",
-      "OrchardCore.Application.Cms.Targets >= 1.0.0-beta2-67846",
-      "OrchardCore.Mvc.HelloWorld >= 1.0.0"
+      "OrchardCore.Application.Cms.Targets >= 1.0.0-beta2-67846"
     ]
   },
   "packageFolders": {
@@ -17539,11 +17519,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kenney\\source\\repos\\cms.app\\cms.app\\cms.app.csproj",
+      "projectUniqueName": "C:\\Code\\Forms\\cms.app\\cms.app.csproj",
       "projectName": "cms.app",
-      "projectPath": "C:\\Users\\kenney\\source\\repos\\cms.app\\cms.app\\cms.app.csproj",
+      "projectPath": "C:\\Code\\Forms\\cms.app\\cms.app.csproj",
       "packagesPath": "C:\\Users\\kenney\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kenney\\source\\repos\\cms.app\\cms.app\\obj\\",
+      "outputPath": "C:\\Code\\Forms\\cms.app\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -17562,11 +17542,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "C:\\Users\\kenney\\source\\repos\\cms.app\\HCMS.News\\HCMS.News.csproj": {
-              "projectPath": "C:\\Users\\kenney\\source\\repos\\cms.app\\HCMS.News\\HCMS.News.csproj"
-            },
-            "C:\\Users\\kenney\\source\\repos\\cms.app\\OrchardCore.Mvc.HelloWorld\\OrchardCore.Mvc.HelloWorld.csproj": {
-              "projectPath": "C:\\Users\\kenney\\source\\repos\\cms.app\\OrchardCore.Mvc.HelloWorld\\OrchardCore.Mvc.HelloWorld.csproj"
+            "C:\\Code\\Forms\\HCMS.News\\HCMS.News.csproj": {
+              "projectPath": "C:\\Code\\Forms\\HCMS.News\\HCMS.News.csproj"
             }
           }
         }
@@ -17603,17 +17580,5 @@
         "warn": true
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1602",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "OrchardCore.Mvc.HelloWorld does not provide an inclusive lower bound for dependency Microsoft.AspNetCore.Mvc. An approximate best match of Microsoft.AspNetCore.Mvc 1.0.0 was resolved.",
-      "libraryId": "Microsoft.AspNetCore.Mvc",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v2.1"
-      ]
-    }
-  ]
+  }
 }
