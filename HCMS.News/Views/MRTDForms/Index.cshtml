@@ -1,0 +1,71 @@
+﻿<link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+@*<link href="Assets/GetIMDB.css" rel="stylesheet">*@
+
+<div>
+    <h1>Movies produced by Studio Ghibli</h1>
+    A Japanese animation film studio based in Tokyo Japan
+</div>
+
+<div id="root"></div>
+
+@*
+<script src="Assets/GetIMDB.js"></script>*@
+
+<script type="text/javascript">
+    const app = document.getElementById('root');
+
+    const container = document.createElement('div');
+    container.setAttribute('class', 'container');
+
+    app.appendChild(container);
+
+    var request = new XMLHttpRequest();
+    request.open('GET', 'https://ghibliapi.herokuapp.com/films', true);
+    request.onload = function () {
+
+        // Begin accessing JSON data here
+        var data = JSON.parse(this.response);
+        if (request.status >= 200 && request.status < 400) {
+            data.forEach(movie => {
+                const card = document.createElement('div');
+                card.setAttribute('class', 'card');
+
+                const h1 = document.createElement('h1');
+                h1.textContent = movie.title;
+
+                const p = document.createElement('p');
+                movie.description = movie.description.substring(0, 300);
+                p.textContent = `${movie.description}...`;
+
+                container.appendChild(card);
+                card.appendChild(h1);
+                card.appendChild(p);
+            });
+        } else {
+            const errorMessage = document.createElement('marquee');
+            errorMessage.textContent = `Gah, it's not working!`;
+            app.appendChild(errorMessage);
+        }
+    }
+
+    request.send();
+
+</script>
+
+<style>
+    #root {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        margin: 1rem;
+        border: 1px solid gray;
+    }
+</style>
+

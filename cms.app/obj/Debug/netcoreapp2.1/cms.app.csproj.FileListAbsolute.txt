@@ -34,3 +34,5 @@ C:\Code\Forms\cms.app\obj\Debug\netcoreapp2.1\cms.app.RazorTargetAssemblyInfo.ca
 C:\Code\Forms\cms.app\obj\Debug\netcoreapp2.1\cms.app.csproj.CopyComplete
 C:\Code\Forms\cms.app\obj\Debug\netcoreapp2.1\cms.app.dll
 C:\Code\Forms\cms.app\obj\Debug\netcoreapp2.1\cms.app.pdb
+C:\Code\Forms\cms.app\bin\Debug\netcoreapp2.1\AdvancedForms.dll
+C:\Code\Forms\cms.app\bin\Debug\netcoreapp2.1\AdvancedForms.pdb

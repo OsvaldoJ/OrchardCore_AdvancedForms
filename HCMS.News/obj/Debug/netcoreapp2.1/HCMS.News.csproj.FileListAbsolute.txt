@@ -10,9 +10,9 @@ C:\Users\kenney\source\repos\cms.app\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News
 C:\Code\Forms\HCMS.News\bin\Debug\netcoreapp2.1\HCMS.News.deps.json
 C:\Code\Forms\HCMS.News\bin\Debug\netcoreapp2.1\HCMS.News.dll
 C:\Code\Forms\HCMS.News\bin\Debug\netcoreapp2.1\HCMS.News.pdb
-C:\Code\Forms\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.csprojAssemblyReference.cache
 C:\Code\Forms\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.csproj.CoreCompileInputs.cache
 C:\Code\Forms\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.AssemblyInfoInputs.cache
 C:\Code\Forms\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.AssemblyInfo.cs
 C:\Code\Forms\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.dll
 C:\Code\Forms\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.pdb
+C:\Code\Forms\HCMS.News\obj\Debug\netcoreapp2.1\HCMS.News.csprojAssemblyReference.cache

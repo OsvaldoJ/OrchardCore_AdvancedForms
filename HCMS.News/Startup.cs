@@ -4,6 +4,7 @@ using OrchardCore.Modules;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 
+
 namespace HCMS.News
 {
     public class Startup : StartupBase

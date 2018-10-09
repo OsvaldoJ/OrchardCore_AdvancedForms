@@ -12,10 +12,10 @@ using System;
 using System.Reflection;
 
 [assembly: OrchardCore.Modules.Manifest.ModuleMarkerAttribute("HCMS.News", "Module")]
-[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\Views\\HCMSNews\\Index.cshtml|C:\\Code\\Forms\\HCMS.News\\Views\\HCMS" +
-    "News\\Index.cshtml")]
-[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\Views\\HCMSNews\\Movies.cshtml|C:\\Code\\Forms\\HCMS.News\\Views\\HCM" +
-    "SNews\\Movies.cshtml")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\Views\\MRTDForms\\Index.cshtml|C:\\Code\\Forms\\HCMS.News\\Views\\MRT" +
+    "DForms\\Index.cshtml")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\Views\\MRTDForms\\ManualForms.cshtml|C:\\Code\\Forms\\HCMS.News\\Vie" +
+    "ws\\MRTDForms\\ManualForms.cshtml")]
 [assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\wwwroot\\Scripts\\GetIMDB.js|C:\\Code\\Forms\\HCMS.News\\wwwroot\\Scr" +
     "ipts\\GetIMDB.js")]
 [assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\HCMS.News\\wwwroot\\Styles\\GetIMDB.css|C:\\Code\\Forms\\HCMS.News\\wwwroot\\Sty" +

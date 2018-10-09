@@ -1,6 +1,0 @@
-C:\Users\kenney\source\repos\cms.app\Custom_HCMS\bin\Debug\netcoreapp2.1\Custom_HCMS.deps.json
-C:\Users\kenney\source\repos\cms.app\Custom_HCMS\bin\Debug\netcoreapp2.1\Custom_HCMS.dll
-C:\Users\kenney\source\repos\cms.app\Custom_HCMS\obj\Debug\netcoreapp2.1\Custom_HCMS.csprojAssemblyReference.cache
-C:\Users\kenney\source\repos\cms.app\Custom_HCMS\obj\Debug\netcoreapp2.1\Custom_HCMS.csproj.CoreCompileInputs.cache
-C:\Users\kenney\source\repos\cms.app\Custom_HCMS\obj\Debug\netcoreapp2.1\Custom_HCMS.AssemblyInfoInputs.cache
-C:\Users\kenney\source\repos\cms.app\Custom_HCMS\obj\Debug\netcoreapp2.1\Custom_HCMS.AssemblyInfo.cs
