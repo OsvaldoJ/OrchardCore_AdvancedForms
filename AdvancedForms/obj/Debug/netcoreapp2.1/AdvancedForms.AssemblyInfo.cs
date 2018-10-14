@@ -12,8 +12,10 @@ using System;
 using System.Reflection;
 
 [assembly: OrchardCore.Modules.Manifest.ModuleMarkerAttribute("AdvancedForms", "Module")]
-[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\AdvancedForms\\Views\\Admin\\Index.cshtml|C:\\Code\\Forms\\AdvancedForms\\Views" +
-    "\\Admin\\Index.cshtml")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\AdvancedForms\\Views\\Admin\\Create.cshtml|C:\\Code\\Forms\\AdvancedForms\\View" +
+    "s\\Admin\\Create.cshtml")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\AdvancedForms\\Views\\_ViewImports.cshtml|C:\\Code\\Forms\\AdvancedForms\\View" +
+    "s\\_ViewImports.cshtml")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("AdvancedForms")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

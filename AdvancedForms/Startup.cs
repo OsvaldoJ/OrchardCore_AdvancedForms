@@ -31,7 +31,7 @@ namespace AdvancedForms
                 name: "AdvancedForms",
                 areaName: "AdvancedForms",
                 template: "",
-                defaults: new { controller = "AdvancedForms", action = "Index" }
+                defaults: new { controller = "AdvancedForms", action = "Create" }
             );
         }
     }

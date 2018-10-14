@@ -1,0 +1,103 @@
+﻿@*  <head>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+        <link rel='stylesheet' href='https://unpkg.com/formiojs@latest/dist/formio.full.min.css'>
+        <script src='https://unpkg.com/formiojs@latest/dist/formio.full.min.js'></script>
+        <script type='text/javascript'>
+            window.onload = function () {
+                //Formio.builder(document.getElementById('builder'));
+                let formioComponents;
+                Formio.builder(document.getElementById('builder'), { components: this.formioComponents })
+                    .then(function (builder) {
+                        builder.on('saveComponent', function () {
+                            console.log(builder.schema);
+                        });
+                    });;
+
+            };
+        </script>
+    </head>
+    <body>
+        <div id='builder'></div>
+    </body>
+    </html>*@
+
+@*@using OrchardCore.ContentManagement
+    @using OrchardCore.ContentManagement.Metadata
+    @using OrchardCore.Mvc.Utilities
+
+
+    @inject IContentDefinitionManager ContentDefinitionManager
+    @{
+        ContentItem contentItem = Model.ContentItem;
+        var contentTypeDefinition = ContentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
+        var typeDisplayName = contentTypeDefinition?.DisplayName ?? contentItem.ContentType.CamelFriendly();
+    }
+
+    <h1>Model.Title</h1>
+    <form asp-action="Create" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post" enctype="multipart/form-data">
+        @Html.ValidationSummary()
+        @await DisplayAsync(Model)
+    </form>*@
+
+@model AdvancedForms.ViewModels.AdvancedFormViewModel
+
+<style asp-src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" debug-src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></style>
+<style asp-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.css" debug-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.css"></style>
+<script asp-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.js" debug-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.js" at="Head" asp-name="formio.full.min"></script>
+
+<script type='text/javascript' at="Head">
+    window.onload = function () {
+        let formioComponents;
+        Formio.builder(document.getElementById('builder'), { components: this.formioComponents })
+            .then(function (builder) {
+                builder.on('saveComponent', function () {
+                    console.log(builder.schema);
+                    document.getElementById('Container').value = JSON.stringify(builder.schema);
+                });
+            });;
+
+    };
+</script>
+
+<h1>Advanced Form Module</h1>
+<br/>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    @Html.ValidationSummary()
+
+    <fieldset class="form-group row">
+        <div class="col-sm">
+            <label asp-for="Title"> Title </label>
+            <input asp-for="Title" class="form-control content-preview-text content-caption-text" autofocus="autofocus" />
+            <span class="hint">The title of the form.</span>
+            <br />
+            <br />
+        </div>
+    </fieldset>
+
+        <div>
+            <label asp-for="Description"> Description </label>
+            <textarea asp-for="Description" class="form-control content-preview-text content-caption-text"></textarea>
+            <span class="hint">The Description of the form.</span>
+            <br />
+            <br />
+        </div>
+
+        <div>
+            <label asp-for="Instructions"> Instructions </label>
+            <textarea asp-for="Instructions" class="form-control content-preview-text content-caption-text"></textarea>
+            <span class="hint">The instructions for the form.</span>
+            <br />
+            <br />
+        </div>
+
+        <div id='builder'></div>
+
+        <input type="hidden" asp-for="Container" />
+
+        <br />
+        <br />
+
+        <button type="submit" name="submit.Publish" class="publish-button btn btn-success" value="submit.Publish">Publish</button>
+
+</form>

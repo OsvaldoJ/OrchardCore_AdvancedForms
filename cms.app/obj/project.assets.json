@@ -7757,11 +7757,19 @@
         "dependencies": {
           "Microsoft.AspNetCore.Mvc": "2.2.0-preview2-35157",
           "OrchardCore.Admin.Abstractions": "1.0.0-beta2-67846",
+          "OrchardCore.ContentManagement": "1.0.0-beta2-67846",
+          "OrchardCore.ContentManagement.Display": "1.0.0-beta2-67846",
+          "OrchardCore.ContentTypes.Abstractions": "1.0.0-beta2-67846",
           "OrchardCore.Environment.Navigation": "1.0.0-beta2-67846",
           "OrchardCore.Module.Targets": "1.0.0-beta2-67846",
-          "OrchardCore.Mvc.Core": "1.0.0-beta2-67846",
+          "OrchardCore.Mvc.Abstractions": "1.0.0-beta2-67846",
+          "OrchardCore.ResourceManagement": "1.0.0-beta2-67846",
+          "OrchardCore.Scripting.Abstractions": "1.0.0-beta2-67846",
           "OrchardCore.Security": "1.0.0-beta2-67846",
-          "OrchardCore.Security.Abstractions": "1.0.0-beta2-67846"
+          "OrchardCore.Security.Abstractions": "1.0.0-beta2-67846",
+          "OrchardCore.Settings": "1.0.0-beta2-67846",
+          "OrchardCore.Users.Abstractions": "1.0.0-beta2-67846",
+          "OrchardCore.Workflows.Abstractions": "1.0.0-beta2-67846"
         },
         "compile": {
           "bin/placeholder/AdvancedForms.dll": {}
