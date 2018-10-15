@@ -50,12 +50,10 @@
         let formioComponents;
         Formio.builder(document.getElementById('builder'), { components: this.formioComponents })
             .then(function (builder) {
-                builder.on('saveComponent', function () {
-                    console.log(builder.schema);
+                builder.on('saveComponent', function () {                   
                     document.getElementById('Container').value = JSON.stringify(builder.schema);
                 });
             });;
-
     };
 </script>
 

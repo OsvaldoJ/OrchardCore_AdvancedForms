@@ -102,28 +102,98 @@ namespace AdvancedForms.Controllers
             //    return Unauthorized();
             //}
 
-            contentItem.Content.AdvancedForm.Title = viewModel.Title;
-            contentItem.Content.AdvancedForm.Description = "{\"Text\":" + viewModel.Description + "}";
-            contentItem.Content.AdvancedForm.Instructions = "{\"Text\":" + viewModel.Instructions + "}";
-            contentItem.Content.AdvancedForm.Container = "{\"Text\":" + viewModel.Container + "}";
+            //string advFormJson = @"
+            //    'AdvancedForm': {                
+            //      'Description': {
+            //          'Text': ''
+            //        },
+            //        'Title': '',
+            //        'Instructions': {
+            //          'Text': ''
+            //        },
+            //        'Container': {
+            //          'Text': ''
+            //        }                   
+            //      }
+            //    ";
+
+            //var advForm = Newtonsoft.Json.Linq.JArray.Parse(advFormJson);
+            //contentItem.Content.AdvancedForm = advForm;
+
+            //contentItem.Content.AdvancedForm.Title = viewModel.Title;                      
+            //contentItem.Content.AdvancedForm.Description.Text = viewModel.Description;
+            //contentItem.Content.AdvancedForm.Instructions.Text = viewModel.Instructions;
+            //contentItem.Content.AdvancedForm.Container.Text = viewModel.Container;
+            //contentItem.Content.AdvancedForm.TitlePart = viewModel.Title;
+
 
             //var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, this, true);
-            
+
             //if (!ModelState.IsValid)
             //{
             //    _session.Cancel();
             //    return View(new AdvancedFormViewModel());
             //}
 
+            var advForm = new AdvForm(viewModel.Description, viewModel.Instructions, viewModel.Container, viewModel.Title);
+            var titlePart = new TitlePartStart(viewModel.Title);
+            contentItem.Content.AdvancedForm = Newtonsoft.Json.Linq.JToken.FromObject(advForm);
+            contentItem.Content.TitlePart = Newtonsoft.Json.Linq.JToken.FromObject(titlePart);
+
             await _contentManager.CreateAsync(contentItem, VersionOptions.Draft);
 
             await conditionallyPublish(contentItem);
             return View(viewModel);
         }
+        
     }
-
-    public class MyPart : ContentPart
+       
+    public class MyPart 
     {
+        public MyPart(string text)
+        {
+            Text = text;
+        }
+
         public string Text { get; set; }
     }
+
+    public class TitlePartStart
+    {
+        public TitlePartStart(string title)
+        {
+            Title = title;
+        }
+
+        public string Title { get; set; }
+    }
+
+    public class TitlePartEnd
+    {
+        public TitlePartStart Title;
+
+        public TitlePartEnd(string title)
+        {
+            Title = new TitlePartStart(title);
+        }
+    }
+
+
+    public class AdvForm
+    {
+        public MyPart Description;
+        public string Title { get; set; }
+        public MyPart Instructions, Container;       
+
+        public AdvForm(string description, string instructions, string container, string title)
+        {
+            Description = new MyPart(description);
+            Title = title;
+            Instructions = new MyPart(instructions);
+            Container = new MyPart(container);           
+        }        
+
+    }
+
+        
 }
