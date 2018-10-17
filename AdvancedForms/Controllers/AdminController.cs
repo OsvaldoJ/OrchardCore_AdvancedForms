@@ -65,7 +65,7 @@ namespace AdvancedForms.Controllers
                 return Unauthorized();
             }
 
-            return View();
+            return View(new AdvancedFormViewModel());
         }
 
         [HttpPost, ActionName("Create")]
@@ -102,43 +102,18 @@ namespace AdvancedForms.Controllers
             //    return Unauthorized();
             //}
 
-            //string advFormJson = @"
-            //    'AdvancedForm': {                
-            //      'Description': {
-            //          'Text': ''
-            //        },
-            //        'Title': '',
-            //        'Instructions': {
-            //          'Text': ''
-            //        },
-            //        'Container': {
-            //          'Text': ''
-            //        }                   
-            //      }
-            //    ";
-
-            //var advForm = Newtonsoft.Json.Linq.JArray.Parse(advFormJson);
-            //contentItem.Content.AdvancedForm = advForm;
-
-            //contentItem.Content.AdvancedForm.Title = viewModel.Title;                      
-            //contentItem.Content.AdvancedForm.Description.Text = viewModel.Description;
-            //contentItem.Content.AdvancedForm.Instructions.Text = viewModel.Instructions;
-            //contentItem.Content.AdvancedForm.Container.Text = viewModel.Container;
-            //contentItem.Content.AdvancedForm.TitlePart = viewModel.Title;
-
-
-            //var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, this, true);
-
-            //if (!ModelState.IsValid)
-            //{
-            //    _session.Cancel();
-            //    return View(new AdvancedFormViewModel());
-            //}
-
             var advForm = new AdvForm(viewModel.Description, viewModel.Instructions, viewModel.Container, viewModel.Title);
             var titlePart = new TitlePartStart(viewModel.Title);
             contentItem.Content.AdvancedForm = Newtonsoft.Json.Linq.JToken.FromObject(advForm);
             contentItem.Content.TitlePart = Newtonsoft.Json.Linq.JToken.FromObject(titlePart);
+
+            var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, this, true);
+
+            if (!ModelState.IsValid)
+            {
+                _session.Cancel();
+                return View(viewModel);
+            }
 
             await _contentManager.CreateAsync(contentItem, VersionOptions.Draft);
 
