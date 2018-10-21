@@ -7,8 +7,6 @@
   <ItemGroup>
     <Folder Include="Assets\" />
     <Folder Include="Controllers\" />
-    <Folder Include="wwwroot\Styles\" />
-    <Folder Include="wwwroot\Scripts\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +15,8 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
       <Pack>true</Pack>
     </None>
+    <None Include="wwwroot\Scripts\formio.full.min.js" />
+    <None Include="wwwroot\Styles\formio.full.min.css" />
   </ItemGroup>
 
   <ItemGroup>

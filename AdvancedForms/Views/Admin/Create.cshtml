@@ -42,10 +42,17 @@
 @model AdvancedForms.ViewModels.AdvancedFormViewModel
 
 <style asp-src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" debug-src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></style>
-<style asp-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.css" debug-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.css"></style>
-<script asp-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.js" debug-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.js" at="Head" asp-name="formio.full.min"></script>
+@*<style asp-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.css" debug-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.css"></style>*@
+@*<script asp-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.js" debug-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.js" at="Head" asp-name="formio.full.min"></script>*@
 
-@{ var standardComp = "{components:this.formioComponents}";}
+<style asp-src="/AdvancedForms/Styles/formio.full.min.css"></style>
+<script asp-src="/AdvancedForms/Scripts/formio.full.min.js" at="Head" asp-name="formio.full.min"></script>
+
+
+@{
+    var standardComp = "{components:this.formioComponents}";
+    var createOrEdit = String.IsNullOrEmpty(Model.Id) ? "Create" : "Edit";
+}
 
 <script type='text/javascript' at="Head">
     window.onload = function () {
@@ -72,31 +79,31 @@
 <h1>Advanced Form Module</h1>
 <br />
 
-<form enctype="multipart/form-data" asp-action="Create" method="post" id="main"></form>
+<form enctype="multipart/form-data" asp-action="@createOrEdit" method="post" id="main"></form>
 
-    <div>
-        <label asp-for="Title"> Title </label>
-        <input asp-for="Title" class="form-control content-preview-text content-caption-text" autofocus="autofocus" form="main"/>
-        <span class="hint">The title of the form.</span>
-        <br />
-        <br />
-    </div>
+<div>
+    <label asp-for="Title"> Title </label>
+    <input asp-for="Title" class="form-control content-preview-text content-caption-text" autofocus="autofocus" form="main" />
+    <span class="hint">The title of the form.</span>
+    <br />
+    <br />
+</div>
 
-    <div>
-        <label asp-for="Description"> Description </label>
-        <textarea asp-for="Description" class="form-control content-preview-text content-caption-text" form="main"></textarea>
-        <span class="hint">The Description of the form.</span>
-        <br />
-        <br />
-    </div>
+<div>
+    <label asp-for="Description"> Description </label>
+    <textarea asp-for="Description" class="form-control content-preview-text content-caption-text" form="main"></textarea>
+    <span class="hint">The Description of the form.</span>
+    <br />
+    <br />
+</div>
 
-    <div>
-        <label asp-for="Instructions"> Instructions </label>
-        <textarea asp-for="Instructions" class="form-control content-preview-text content-caption-text" form="main"></textarea>
-        <span class="hint">The instructions for the form.</span>
-        <br />
-        <br />
-    </div>
+<div>
+    <label asp-for="Instructions"> Instructions </label>
+    <textarea asp-for="Instructions" class="form-control content-preview-text content-caption-text" form="main"></textarea>
+    <span class="hint">The instructions for the form.</span>
+    <br />
+    <br />
+</div>
 
 <div id='builder'></div>
 <input type="hidden" asp-for="Container" form="main" />
@@ -106,6 +113,7 @@
 
 <button form="main" type="submit" name="submit.Publish" class="publish-button btn btn-success" value="submit.Publish">Publish</button>
 
+<input type="hidden" asp-for="Id" form="main" />
 
 
 

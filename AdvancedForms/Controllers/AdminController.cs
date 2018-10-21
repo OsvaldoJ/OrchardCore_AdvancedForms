@@ -15,6 +15,10 @@ using OrchardCore.Settings;
 using YesSql;
 using OrchardCore.Admin;
 using AdvancedForms.ViewModels;
+using AdvancedForms.Models;
+using Newtonsoft.Json.Linq;
+using OrchardCore.ContentManagement.Metadata.Settings;
+using Microsoft.AspNetCore.Routing;
 
 namespace AdvancedForms.Controllers
 {
@@ -80,9 +84,6 @@ namespace AdvancedForms.Controllers
                 return Unauthorized();
             }
 
-            //var x = new DefaultContentManager(_contentDefinitionManager, null, _session, null, null);   
-            //x.CreateAsync(dummyContent.ContentItem, )
-
             return await CreatePOST(viewModel, async contentItem =>
             {
                 await _contentManager.PublishAsync(contentItem);
@@ -97,15 +98,16 @@ namespace AdvancedForms.Controllers
         {
             var contentItem = await _contentManager.NewAsync(_id);
 
-            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.EditContent, contentItem))
-            //{
-            //    return Unauthorized();
-            //}
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageAdvancedForms, contentItem))
+            {
+                return Unauthorized();
+            }
 
-            var advForm = new AdvForm(viewModel.Description, viewModel.Instructions, viewModel.Container, viewModel.Title);
-            var titlePart = new TitlePartStart(viewModel.Title);
-            contentItem.Content.AdvancedForm = Newtonsoft.Json.Linq.JToken.FromObject(advForm);
-            contentItem.Content.TitlePart = Newtonsoft.Json.Linq.JToken.FromObject(titlePart);
+            var advForm = new AdvancedForm(viewModel.Description, viewModel.Instructions, 
+                viewModel.Container, viewModel.Title);
+            var titlePart = new TitlePart(viewModel.Title);
+            contentItem.Content.AdvancedForm = JToken.FromObject(advForm);
+            contentItem.Content.TitlePart = JToken.FromObject(titlePart);
 
             var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, this, true);
 
@@ -116,59 +118,122 @@ namespace AdvancedForms.Controllers
             }
 
             await _contentManager.CreateAsync(contentItem, VersionOptions.Draft);
-
+           
             await conditionallyPublish(contentItem);
             return View(viewModel);
         }
+
+        public async Task<IActionResult> Edit(string contentItemId)
+        {
+            var contentItem = await _contentManager.GetAsync(contentItemId, VersionOptions.Latest);
+
+            if (contentItem == null)
+            {
+                return NotFound();
+            }
+
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageAdvancedForms, contentItem))
+            {
+                return Unauthorized();
+            }
+
+            var model = new AdvancedFormViewModel();
+
+            model.Id = contentItemId;
+            model.Title = contentItem.Content.AdvancedForm.Title;
+            model.Container = contentItem.Content.AdvancedForm.Container.Html; 
+            model.Description = contentItem.Content.AdvancedForm.Description.Html;
+            model.Instructions = contentItem.Content.AdvancedForm.Instructions.Html;
+
+            return View("Create", model);
+        }
+
+        //[HttpPost, ActionName("Edit")]
+        //[FormValueRequired("submit.Save")]
+        //public Task<IActionResult> EditPOST(string contentItemId, string returnUrl)
+        //{
+        //    return EditPOST(contentItemId, returnUrl, contentItem =>
+        //    {
+        //        var typeDefinition = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
+
+        //        _notifier.Success(string.IsNullOrWhiteSpace(typeDefinition.DisplayName)
+        //            ? T["Your content draft has been saved."]
+        //            : T["Your {0} draft has been saved.", typeDefinition.DisplayName]);
+
+        //        return Task.CompletedTask;
+        //    });
+        //}
+
+        [HttpPost, ActionName("Edit")]
+        [FormValueRequired("submit.Publish")]
+        public async Task<IActionResult> EditAndPublishPOST(AdvancedFormViewModel viewModel, string returnUrl)
+        {
+            string contentItemId = viewModel.Id;
+
+            var content = await _contentManager.GetAsync(contentItemId, VersionOptions.Latest);
+
+            if (content == null)
+            {
+                return NotFound();
+            }
+
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageAdvancedForms, content))
+            {
+                return Unauthorized();
+            }
+
+            return await EditPOST(contentItemId, returnUrl, async contentItem =>
+            {
+                await _contentManager.PublishAsync(contentItem);
+
+                var typeDefinition = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
+
+                _notifier.Success(string.IsNullOrWhiteSpace(typeDefinition.DisplayName)
+                    ? T["Your content has been published."]
+                    : T["Your {0} has been published.", typeDefinition.DisplayName]);
+            });
+        }
+
+        private async Task<IActionResult> EditPOST(string contentItemId, string returnUrl, Func<ContentItem, Task> conditionallyPublish)
+        {
+            var contentItem = await _contentManager.GetAsync(contentItemId, VersionOptions.DraftRequired);
+
+            if (contentItem == null)
+            {
+                return NotFound();
+            }
+
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageAdvancedForms, contentItem))
+            {
+                return Unauthorized();
+            }
+
         
-    }
-       
-    public class MyPart 
-    {
-        public MyPart(string text)
-        {
-            Text = text;
+            var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, this, false);
+            if (!ModelState.IsValid)
+            {
+                _session.Cancel();
+                return View("Edit", model);
+            }
+
+            await conditionallyPublish(contentItem);
+
+            // The content item needs to be marked as saved (again) in case the drivers or the handlers have
+            // executed some query which would flush the saved entities. In this case the changes happening in handlers 
+            // would not be taken into account.
+
+            _session.Save(contentItem);
+            
+            var typeDefinition = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
+
+            if (returnUrl == null)
+            {
+                return RedirectToAction("Edit", new RouteValueDictionary { { "ContentItemId", contentItem.ContentItemId } });
+            }
+            else
+            {
+                return LocalRedirect(returnUrl);
+            }
         }
-
-        public string Text { get; set; }
-    }
-
-    public class TitlePartStart
-    {
-        public TitlePartStart(string title)
-        {
-            Title = title;
-        }
-
-        public string Title { get; set; }
-    }
-
-    public class TitlePartEnd
-    {
-        public TitlePartStart Title;
-
-        public TitlePartEnd(string title)
-        {
-            Title = new TitlePartStart(title);
-        }
-    }
-
-
-    public class AdvForm
-    {
-        public MyPart Description;
-        public string Title { get; set; }
-        public MyPart Instructions, Container;       
-
-        public AdvForm(string description, string instructions, string container, string title)
-        {
-            Description = new MyPart(description);
-            Title = title;
-            Instructions = new MyPart(instructions);
-            Container = new MyPart(container);           
-        }        
-
-    }
-
-        
+    }               
 }

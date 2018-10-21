@@ -16,6 +16,10 @@ using System.Reflection;
     "s\\Admin\\Create.cshtml")]
 [assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\AdvancedForms\\Views\\_ViewImports.cshtml|C:\\Code\\Forms\\AdvancedForms\\View" +
     "s\\_ViewImports.cshtml")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\AdvancedForms\\wwwroot\\Scripts\\formio.full.min.js|C:\\Code\\Forms\\AdvancedF" +
+    "orms\\wwwroot\\Scripts\\formio.full.min.js")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\AdvancedForms\\wwwroot\\Styles\\formio.full.min.css|C:\\Code\\Forms\\AdvancedF" +
+    "orms\\wwwroot\\Styles\\formio.full.min.css")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("AdvancedForms")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
