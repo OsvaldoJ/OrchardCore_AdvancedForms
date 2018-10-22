@@ -31,7 +31,14 @@ namespace AdvancedForms
                 name: "AdvancedForms",
                 areaName: "AdvancedForms",
                 template: "",
-                defaults: new { controller = "AdvancedForms", action = "Create" }
+                defaults: new { controller = "AdvancedForms", action = "Index" }
+            );
+
+            routes.MapAreaRoute(
+                name: "DisplayAdvancedForm",
+                areaName: "AdvancedForms",
+                template: "AdvancedForms/{alias}",
+                defaults: new { controller = "AdvancedForms", action = "Display" }
             );
         }
     }

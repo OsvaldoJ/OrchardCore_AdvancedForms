@@ -1,45 +1,4 @@
-﻿@*  <head>
-        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
-        <link rel='stylesheet' href='https://unpkg.com/formiojs@latest/dist/formio.full.min.css'>
-        <script src='https://unpkg.com/formiojs@latest/dist/formio.full.min.js'></script>
-        <script type='text/javascript'>
-            window.onload = function () {
-                //Formio.builder(document.getElementById('builder'));
-                let formioComponents;
-                Formio.builder(document.getElementById('builder'), { components: this.formioComponents })
-                    .then(function (builder) {
-                        builder.on('saveComponent', function () {
-                            console.log(builder.schema);
-                        });
-                    });;
-
-            };
-        </script>
-    </head>
-    <body>
-        <div id='builder'></div>
-    </body>
-    </html>*@
-
-@*@using OrchardCore.ContentManagement
-    @using OrchardCore.ContentManagement.Metadata
-    @using OrchardCore.Mvc.Utilities
-
-
-    @inject IContentDefinitionManager ContentDefinitionManager
-    @{
-        ContentItem contentItem = Model.ContentItem;
-        var contentTypeDefinition = ContentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
-        var typeDisplayName = contentTypeDefinition?.DisplayName ?? contentItem.ContentType.CamelFriendly();
-    }
-
-    <h1>Model.Title</h1>
-    <form asp-action="Create" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post" enctype="multipart/form-data">
-        @Html.ValidationSummary()
-        @await DisplayAsync(Model)
-    </form>*@
-
-@model AdvancedForms.ViewModels.AdvancedFormViewModel
+﻿@model AdvancedForms.ViewModels.AdvancedFormViewModel
 
 <style asp-src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" debug-src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></style>
 @*<style asp-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.css" debug-src="https://unpkg.com/formiojs@latest/dist/formio.full.min.css"></style>*@
@@ -51,7 +10,8 @@
 
 @{
     var standardComp = "{components:this.formioComponents}";
-    var createOrEdit = String.IsNullOrEmpty(Model.Id) ? "Create" : "Edit";
+    var isEdit = !String.IsNullOrEmpty(Model.Id);
+    var createOrEdit = isEdit ? "Edit" : "Create";
 }
 
 <script type='text/javascript' at="Head">
@@ -59,7 +19,7 @@
         let formioComponents;
         Formio.builder(document.getElementById('builder'),
 
-            @if (String.IsNullOrEmpty(Model.Container))
+                @if (String.IsNullOrEmpty(Model.Container))
                 {
                    @standardComp
                 }
@@ -113,8 +73,13 @@
 
 <button form="main" type="submit" name="submit.Publish" class="publish-button btn btn-success" value="submit.Publish">Publish</button>
 
+@if (isEdit)
+{
+    var returnUrl = Context.Request.Query["returnUrl"];
+    <button form="main" type="submit" name="submit.Save" class="primaryAction btn btn-primary" value="submit.Save">@T["Save Draft"]</button>      
+    @if (!String.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+    {
+        <a id="button-cancel" href="@returnUrl" class="btn btn-secondary">@T["Cancel"]</a>
+    }
+}
 <input type="hidden" asp-for="Id" form="main" />
-
-
-
-

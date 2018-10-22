@@ -7,10 +7,17 @@ namespace AdvancedForms
     {
         public static readonly Permission ManageAdvancedForms = new Permission("ManageAdvancedFormsContent", "Manage AdvancedForms");
         public static readonly Permission ManageOwnAdvancedForms = new Permission("ManageOwnAdvancedForms", "Manage Own AdvancedForms", new[] { ManageAdvancedForms });
+        public static readonly Permission ViewContent = new Permission("ViewContent", "View all content", new[] { ManageAdvancedForms });
+        public static readonly Permission ViewOwnContent = new Permission("ViewOwnContent", "View own content", new[] { ViewContent });
 
         public IEnumerable<Permission> GetPermissions()
         {
-            return new[] { ManageAdvancedForms, ManageOwnAdvancedForms };
+            return new[] {
+                ManageAdvancedForms,
+                ManageOwnAdvancedForms,
+                ViewContent,
+                ViewOwnContent
+            };
         }
 
         public IEnumerable<PermissionStereotype> GetDefaultStereotypes()
@@ -35,6 +42,14 @@ namespace AdvancedForms
                     Name = "Contributor",
                     Permissions = new[] { ManageOwnAdvancedForms }
                 },
+                 new PermissionStereotype {
+                    Name = "Authenticated",
+                    Permissions = new[] {ViewContent}
+                },
+                new PermissionStereotype {
+                    Name = "Anonymous",
+                    Permissions = new[] {ViewContent}
+                }
             };
         }
     }

@@ -14,6 +14,10 @@ using System.Reflection;
 [assembly: OrchardCore.Modules.Manifest.ModuleMarkerAttribute("AdvancedForms", "Module")]
 [assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\AdvancedForms\\Views\\Admin\\Create.cshtml|C:\\Code\\Forms\\AdvancedForms\\View" +
     "s\\Admin\\Create.cshtml")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\AdvancedForms\\Views\\AdvancedForms\\Display.cshtml|C:\\Code\\Forms\\AdvancedF" +
+    "orms\\Views\\AdvancedForms\\Display.cshtml")]
+[assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\AdvancedForms\\Views\\AdvancedForms\\Index.cshtml|C:\\Code\\Forms\\AdvancedFor" +
+    "ms\\Views\\AdvancedForms\\Index.cshtml")]
 [assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\AdvancedForms\\Views\\_ViewImports.cshtml|C:\\Code\\Forms\\AdvancedForms\\View" +
     "s\\_ViewImports.cshtml")]
 [assembly: OrchardCore.Modules.Manifest.ModuleAssetAttribute(".Modules\\AdvancedForms\\wwwroot\\Scripts\\formio.full.min.js|C:\\Code\\Forms\\AdvancedF" +

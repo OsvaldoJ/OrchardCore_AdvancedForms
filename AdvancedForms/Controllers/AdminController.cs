@@ -108,6 +108,7 @@ namespace AdvancedForms.Controllers
             var titlePart = new TitlePart(viewModel.Title);
             contentItem.Content.AdvancedForm = JToken.FromObject(advForm);
             contentItem.Content.TitlePart = JToken.FromObject(titlePart);
+            contentItem.Content.AutoroutePart.Path = CreatePath(viewModel.Title);
 
             var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, this, true);
 
@@ -123,7 +124,7 @@ namespace AdvancedForms.Controllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> Edit(string contentItemId)
+        public async Task<IActionResult> Edit(string contentItemId, string returnUrl)
         {
             var contentItem = await _contentManager.GetAsync(contentItemId, VersionOptions.Latest);
 
@@ -137,32 +138,33 @@ namespace AdvancedForms.Controllers
                 return Unauthorized();
             }
 
-            var model = new AdvancedFormViewModel();
-
-            model.Id = contentItemId;
-            model.Title = contentItem.Content.AdvancedForm.Title;
-            model.Container = contentItem.Content.AdvancedForm.Container.Html; 
-            model.Description = contentItem.Content.AdvancedForm.Description.Html;
-            model.Instructions = contentItem.Content.AdvancedForm.Instructions.Html;
+            var model = new AdvancedFormViewModel
+            {
+                Id = contentItemId,
+                Title = contentItem.Content.AdvancedForm.Title,
+                Container = contentItem.Content.AdvancedForm.Container.Html,
+                Description = contentItem.Content.AdvancedForm.Description.Html,
+                Instructions = contentItem.Content.AdvancedForm.Instructions.Html
+            };
 
             return View("Create", model);
         }
 
-        //[HttpPost, ActionName("Edit")]
-        //[FormValueRequired("submit.Save")]
-        //public Task<IActionResult> EditPOST(string contentItemId, string returnUrl)
-        //{
-        //    return EditPOST(contentItemId, returnUrl, contentItem =>
-        //    {
-        //        var typeDefinition = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
+        [HttpPost, ActionName("Edit")]
+        [FormValueRequired("submit.Save")]
+        public Task<IActionResult> EditPOST(AdvancedFormViewModel viewModel, string returnUrl)
+        {
+            return EditPOST(viewModel, returnUrl, contentItem =>
+            {
+                var typeDefinition = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
 
-        //        _notifier.Success(string.IsNullOrWhiteSpace(typeDefinition.DisplayName)
-        //            ? T["Your content draft has been saved."]
-        //            : T["Your {0} draft has been saved.", typeDefinition.DisplayName]);
+                _notifier.Success(string.IsNullOrWhiteSpace(typeDefinition.DisplayName)
+                    ? T["Your content draft has been saved."]
+                    : T["Your {0} draft has been saved.", typeDefinition.DisplayName]);
 
-        //        return Task.CompletedTask;
-        //    });
-        //}
+                return Task.CompletedTask;
+            });
+        }
 
         [HttpPost, ActionName("Edit")]
         [FormValueRequired("submit.Publish")]
@@ -182,7 +184,7 @@ namespace AdvancedForms.Controllers
                 return Unauthorized();
             }
 
-            return await EditPOST(contentItemId, returnUrl, async contentItem =>
+            return await EditPOST(viewModel, returnUrl, async contentItem =>
             {
                 await _contentManager.PublishAsync(contentItem);
 
@@ -194,8 +196,10 @@ namespace AdvancedForms.Controllers
             });
         }
 
-        private async Task<IActionResult> EditPOST(string contentItemId, string returnUrl, Func<ContentItem, Task> conditionallyPublish)
+        private async Task<IActionResult> EditPOST(AdvancedFormViewModel viewModel, string returnUrl, Func<ContentItem, Task> conditionallyPublish)
         {
+            string contentItemId = viewModel.Id;
+
             var contentItem = await _contentManager.GetAsync(contentItemId, VersionOptions.DraftRequired);
 
             if (contentItem == null)
@@ -208,12 +212,27 @@ namespace AdvancedForms.Controllers
                 return Unauthorized();
             }
 
-        
-            var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, this, false);
+            var advForm = new AdvancedForm(viewModel.Description, viewModel.Instructions,
+                viewModel.Container, viewModel.Title);
+            var titlePart = new TitlePart(viewModel.Title);
+            contentItem.Content.AdvancedForm = JToken.FromObject(advForm);
+            contentItem.Content.TitlePart = JToken.FromObject(titlePart);
+            contentItem.Content.AutoroutePart = CreatePath(viewModel.Title);
+            contentItem.Content.AutoroutePart.Path = CreatePath(viewModel.Title);
+
+            var model = new AdvancedFormViewModel
+            {
+                Id = viewModel.Id,
+                Title = contentItem.Content.AdvancedForm.Title,
+                Container = contentItem.Content.AdvancedForm.Container.Html,
+                Description = contentItem.Content.AdvancedForm.Description.Html,
+                Instructions = contentItem.Content.AdvancedForm.Instructions.Html
+            };               
+
             if (!ModelState.IsValid)
             {
                 _session.Cancel();
-                return View("Edit", model);
+                return View("Create", model);
             }
 
             await conditionallyPublish(contentItem);
@@ -221,19 +240,27 @@ namespace AdvancedForms.Controllers
             // The content item needs to be marked as saved (again) in case the drivers or the handlers have
             // executed some query which would flush the saved entities. In this case the changes happening in handlers 
             // would not be taken into account.
-
             _session.Save(contentItem);
             
             var typeDefinition = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
 
             if (returnUrl == null)
             {
-                return RedirectToAction("Edit", new RouteValueDictionary { { "ContentItemId", contentItem.ContentItemId } });
+                return RedirectToAction("Edit", new RouteValueDictionary { { "ContentItemId", viewModel.Id } });
             }
             else
             {
                 return LocalRedirect(returnUrl);
             }
+        }
+
+        private string CreatePath(string title)
+        {
+            if (!string.IsNullOrEmpty(title))
+            {
+                title = GetType().Namespace + "/" + title.Replace(" ","-");
+            }
+            return title; 
         }
     }               
 }
