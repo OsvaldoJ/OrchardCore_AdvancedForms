@@ -1,71 +1,66 @@
-﻿<link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
-@*<link href="Assets/GetIMDB.css" rel="stylesheet">*@
+﻿@model AdvancedForms.ViewModels.AdvancedFormViewModel
 
-<div>
-    <h1>Display Movies produced by Studio Ghibli</h1>
-    A Japanese animation film studio based in Tokyo Japan
-</div>
+<style asp-src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" debug-src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></style>
+<style asp-src="/AdvancedForms/Styles/formio.full.min.css"></style>
+<script asp-src="/AdvancedForms/Scripts/formio.full.min.js" at="Head" asp-name="formio.full.min"></script>
 
-<div id="root"></div>
 
-@*
-<script src="Assets/GetIMDB.js"></script>*@
+@{
+    var isEdit = !String.IsNullOrEmpty(Model.Id);
+    var createOrEdit = isEdit ? "Edit" : "Create";
+}
 
-<script type="text/javascript">
-    const app = document.getElementById('root');
+<script type='text/javascript' at="Head">
+    window.onload = function() {
+        Formio.createForm(document.getElementById('formio'), 
+            //create the form from saved data
+            @Html.Raw(Model.Container)
+        ).then(function(form) {
+          //fill form data
+          form.submission = {
+            //data: {
+            //  firstName: 'Joe',
+            //  lastName: 'Smith'
+            //}
+          };
 
-    const container = document.createElement('div');
-    container.setAttribute('class', 'container');
+          // Register for the submit event to get the completed submission.
+          form.on('submit', function(submission) {
+            console.log('Submission was made!', submission);
+            //window.location.replace("http://stackoverflow.com");
 
-    app.appendChild(container);
+          });
 
-    var request = new XMLHttpRequest();
-    request.open('GET', 'https://ghibliapi.herokuapp.com/films', true);
-    request.onload = function () {
-
-        // Begin accessing JSON data here
-        var data = JSON.parse(this.response);
-        if (request.status >= 200 && request.status < 400) {
-            data.forEach(movie => {
-                const card = document.createElement('div');
-                card.setAttribute('class', 'card');
-
-                const h1 = document.createElement('h1');
-                h1.textContent = movie.title;
-
-                const p = document.createElement('p');
-                movie.description = movie.description.substring(0, 300);
-                p.textContent = `${movie.description}...`;
-
-                container.appendChild(card);
-                card.appendChild(h1);
-                card.appendChild(p);
-            });
-        } else {
-            const errorMessage = document.createElement('marquee');
-            errorMessage.textContent = `Gah, it's not working!`;
-            app.appendChild(errorMessage);
-        }
-    }
-
-    request.send();
-
+          // Everytime the form changes, this will fire.
+          form.on('change', function(changed) {
+            console.log('Form was changed', changed);
+          });
+        });
+      };
+      
 </script>
 
-<style>
-    #root {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
+<form enctype="multipart/form-data" asp-action="@createOrEdit" method="post" id="main"></form>
 
-    .container {
-        display: flex;
-        flex-wrap: wrap;
-    }
+<h1>@Model.Title</h1>
+    
+<div>
+    @Html.LabelFor(model => model.Description)
+    <br />
+    @Html.Raw(Model.Description)
+    <br />
+    <br />
+</div>
 
-    .card {
-        margin: 1rem;
-        border: 1px solid gray;
-    }
-</style>
+<div>
+    @Html.LabelFor(model => model.Instructions)
+    <br />
+    @Html.Raw(Model.Instructions)
+    <br />
+    <br />
+</div>
 
+<div id='formio'></div>
+
+<input type="hidden" asp-for="Container" form="main" />
+<input type="hidden" asp-for="Id" form="main" />

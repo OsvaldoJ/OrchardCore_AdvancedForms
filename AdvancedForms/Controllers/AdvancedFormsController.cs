@@ -7,6 +7,7 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display;
 using OrchardCore.DisplayManagement.ModelBinding;
 using System.Threading.Tasks;
+using AdvancedForms.ViewModels;
 
 namespace AdvancedForms.Controllers
 {
@@ -43,7 +44,7 @@ namespace AdvancedForms.Controllers
         {
             if (String.IsNullOrWhiteSpace(alias))
             {
-                Index(); 
+                await Index(); 
             }
       
             var contentItemId = await _contentAliasManager.GetContentItemIdAsync("slug:AdvancedForms/" + alias);
@@ -60,7 +61,14 @@ namespace AdvancedForms.Controllers
                 return Unauthorized();
             }
 
-            var model = await _contentItemDisplayManager.BuildDisplayAsync(contentItem, this);
+            var model = new AdvancedFormViewModel
+            {
+                Id = contentItemId,
+                Title = contentItem.Content.AdvancedForm.Title,
+                Container = contentItem.Content.AdvancedForm.Container.Html,
+                Description = contentItem.Content.AdvancedForm.Description.Html,
+                Instructions = contentItem.Content.AdvancedForm.Instructions.Html
+            };
 
             return View(model);
 
