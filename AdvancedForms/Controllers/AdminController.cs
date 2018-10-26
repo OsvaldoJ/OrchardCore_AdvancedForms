@@ -258,7 +258,7 @@ namespace AdvancedForms.Controllers
         {
             if (!string.IsNullOrEmpty(title))
             {
-                title = GetType().Namespace + "/" + title.Replace(" ","-");
+                title = "AdvancedForms" + "/" + title.Replace(" ","-");
             }
             return title; 
         }

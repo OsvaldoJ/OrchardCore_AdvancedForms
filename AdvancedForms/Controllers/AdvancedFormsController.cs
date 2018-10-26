@@ -11,7 +11,7 @@ using AdvancedForms.ViewModels;
 
 namespace AdvancedForms.Controllers
 {
-    public class AdvancedFormsController : Controller, IUpdateModel
+    public class AdvancedFormsController : Controller
     {
 
         private readonly IContentManager _contentManager;
@@ -72,6 +72,38 @@ namespace AdvancedForms.Controllers
 
             return View(model);
 
+        }
+
+        [HttpPost]
+        [Route("AdvancedForms/Entry")]
+        public async Task<ActionResult> Entry(string submission)
+        {
+            string contentItemId = "";
+
+            var content = await _contentManager.GetAsync(contentItemId, VersionOptions.Latest);
+
+            if (content == null)
+            {
+                return NotFound();
+            }
+
+            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageAdvancedForms, content))
+            //{
+            //    return Unauthorized();
+            //}
+
+            return View();
+
+            //return await EditPOST(viewModel, returnUrl, async contentItem =>
+            //{
+                await _contentManager.PublishAsync(new ContentItem());
+
+            //    var typeDefinition = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
+
+            //    _notifier.Success(string.IsNullOrWhiteSpace(typeDefinition.DisplayName)
+            //        ? T["Your content has been published."]
+            //        : T["Your {0} has been published.", typeDefinition.DisplayName]);
+            //});
         }
 
     }

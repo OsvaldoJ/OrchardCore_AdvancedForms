@@ -29,6 +29,22 @@
             console.log('Submission was made!', submission);
             //window.location.replace("http://stackoverflow.com");
 
+              $.ajax({
+                  url: 'Entry',
+                  method: 'POST',
+                  data: {
+                      __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+                      submission: JSON.stringify(submission)
+                  },
+                  success: function (data) {
+                     
+                  },
+                  error: function (error) {
+                      var errorMsg = "Unable to Save. Try again later.";
+                      $('<div class="alert alert-danger" role="alert"></div>').text(errorMsg + error.responseText).appendTo($('#advancedForm-errors'));
+                  }
+              });
+
           });
 
           // Everytime the form changes, this will fire.
@@ -37,7 +53,8 @@
           });
         });
       };
-      
+
+       
 </script>
 
 <form enctype="multipart/form-data" asp-action="@createOrEdit" method="post" id="main"></form>
@@ -59,6 +76,8 @@
     <br />
     <br />
 </div>
+
+<div id="advancedForm-errors"></div>
 
 <div id='formio'></div>
 
