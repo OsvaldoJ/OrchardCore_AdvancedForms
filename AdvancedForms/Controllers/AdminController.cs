@@ -110,8 +110,6 @@ namespace AdvancedForms.Controllers
             contentItem.Content.TitlePart = JToken.FromObject(titlePart);
             contentItem.Content.AutoroutePart.Path = CreatePath(viewModel.Title);
 
-            var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, this, true);
-
             if (!ModelState.IsValid)
             {
                 _session.Cancel();

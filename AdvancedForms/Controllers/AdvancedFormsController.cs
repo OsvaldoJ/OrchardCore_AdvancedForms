@@ -8,6 +8,8 @@ using OrchardCore.ContentManagement.Display;
 using OrchardCore.DisplayManagement.ModelBinding;
 using System.Threading.Tasks;
 using AdvancedForms.ViewModels;
+using Newtonsoft.Json.Linq;
+using AdvancedForms.Models;
 
 namespace AdvancedForms.Controllers
 {
@@ -18,6 +20,7 @@ namespace AdvancedForms.Controllers
         private readonly IContentItemDisplayManager _contentItemDisplayManager;
         private readonly IAuthorizationService _authorizationService;
         private readonly IContentAliasManager _contentAliasManager;
+        private const string _id = "AdvancedFormSubmissions";
 
         public AdvancedFormsController(
             IContentManager contentManager,
@@ -78,32 +81,35 @@ namespace AdvancedForms.Controllers
         [Route("AdvancedForms/Entry")]
         public async Task<ActionResult> Entry(string submission)
         {
-            string contentItemId = "";
+            var contentItem = await _contentManager.NewAsync(_id);
 
-            var content = await _contentManager.GetAsync(contentItemId, VersionOptions.Latest);
-
-            if (content == null)
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.SubmitForm, contentItem))
             {
-                return NotFound();
+                return Unauthorized();
             }
 
-            //if (!await _authorizationService.AuthorizeAsync(User, Permissions.ManageAdvancedForms, content))
-            //{
-            //    return Unauthorized();
-            //}
+            var subObject = JObject.Parse(submission).ToString(Newtonsoft.Json.Formatting.None);
+
+            string title = "#FormName_" + DateTime.Now.ToUniversalTime().ToString(); 
+            var advForm = new AdvancedFormSubmissions(submission, submission, title);
+            var titlePart = new TitlePart(title);
+            contentItem.Content.AdvancedForm = JToken.FromObject(advForm);
+            contentItem.Content.TitlePart = JToken.FromObject(titlePart);
 
             return View();
+            
+            //var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, this, true);
 
-            //return await EditPOST(viewModel, returnUrl, async contentItem =>
+            //if (!ModelState.IsValid)
             //{
-                await _contentManager.PublishAsync(new ContentItem());
+            //    _session.Cancel();
+            //    return View(viewModel);
+            //}
 
-            //    var typeDefinition = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType);
+            //await _contentManager.CreateAsync(contentItem, VersionOptions.Draft);
 
-            //    _notifier.Success(string.IsNullOrWhiteSpace(typeDefinition.DisplayName)
-            //        ? T["Your content has been published."]
-            //        : T["Your {0} has been published.", typeDefinition.DisplayName]);
-            //});
+            //await conditionallyPublish(contentItem);
+            //return View(viewModel);
         }
 
     }
