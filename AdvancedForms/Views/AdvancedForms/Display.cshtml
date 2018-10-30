@@ -34,7 +34,9 @@
                   method: 'POST',
                   data: {
                       __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
-                      submission: JSON.stringify(submission)
+                      submission: JSON.stringify(submission),
+                      title: '@Model.Title',
+                      id: '@Model.Id'
                   },
                   success: function (data) {
                      

@@ -10,29 +10,33 @@ using System.Threading.Tasks;
 using AdvancedForms.ViewModels;
 using Newtonsoft.Json.Linq;
 using AdvancedForms.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace AdvancedForms.Controllers
 {
-    public class AdvancedFormsController : Controller
+    public class AdvancedFormsController : Controller, IUpdateModel
     {
 
         private readonly IContentManager _contentManager;
         private readonly IContentItemDisplayManager _contentItemDisplayManager;
         private readonly IAuthorizationService _authorizationService;
         private readonly IContentAliasManager _contentAliasManager;
+        private readonly YesSql.ISession _session;
         private const string _id = "AdvancedFormSubmissions";
 
         public AdvancedFormsController(
             IContentManager contentManager,
             IContentItemDisplayManager contentItemDisplayManager,
             IAuthorizationService authorizationService,
-            IContentAliasManager contentAliasManager
+            IContentAliasManager contentAliasManager,
+            YesSql.ISession session
             )
         {
             _authorizationService = authorizationService;
             _contentItemDisplayManager = contentItemDisplayManager;
             _contentManager = contentManager;
             _contentAliasManager = contentAliasManager;
+            _session = session;
         }
 
         [Route("AdvancedForms")]
@@ -79,7 +83,7 @@ namespace AdvancedForms.Controllers
 
         [HttpPost]
         [Route("AdvancedForms/Entry")]
-        public async Task<ActionResult> Entry(string submission)
+        public async Task<IActionResult> Entry(string submission, string title, string id)
         {
             var contentItem = await _contentManager.NewAsync(_id);
 
@@ -88,29 +92,24 @@ namespace AdvancedForms.Controllers
                 return Unauthorized();
             }
 
-            var subObject = JObject.Parse(submission).ToString(Newtonsoft.Json.Formatting.None);
+            var subObject = JObject.Parse(submission);
 
-            string title = "#FormName_" + DateTime.Now.ToUniversalTime().ToString(); 
-            var advForm = new AdvancedFormSubmissions(submission, submission, title);
-            var titlePart = new TitlePart(title);
-            contentItem.Content.AdvancedForm = JToken.FromObject(advForm);
+            string subTitle = title + "_" + DateTime.Now.ToUniversalTime().ToString(); 
+            var advFormSub = new AdvancedFormSubmissions(subObject["data"].ToString(), subObject["metadata"].ToString(), subTitle);
+            var titlePart = new TitlePart(subTitle);
+            contentItem.Content.AdvancedFormSubmissions = JToken.FromObject(advFormSub);
             contentItem.Content.TitlePart = JToken.FromObject(titlePart);
 
-            return View();
-            
-            //var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, this, true);
+            if (!ModelState.IsValid)
+            {
+                _session.Cancel();
+                return StatusCode(StatusCodes.Status406NotAcceptable);
+            }
 
-            //if (!ModelState.IsValid)
-            //{
-            //    _session.Cancel();
-            //    return View(viewModel);
-            //}
+            await _contentManager.CreateAsync(contentItem, VersionOptions.Draft);
 
-            //await _contentManager.CreateAsync(contentItem, VersionOptions.Draft);
-
-            //await conditionallyPublish(contentItem);
-            //return View(viewModel);
-        }
-
+            await _contentManager.PublishAsync(contentItem);
+            return StatusCode(StatusCodes.Status201Created);  
+        }        
     }
 }
