@@ -9,5 +9,7 @@ namespace AdvancedForms.ViewModels
         public string Description { get; set; }
         public string Instructions { get; set; }
         public string Container { get; set; }
+        public string Submission { get; set; }
+        public string SubmissionId { get; set; }
     }
 }

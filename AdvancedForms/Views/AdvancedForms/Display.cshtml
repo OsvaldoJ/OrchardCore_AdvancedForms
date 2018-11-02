@@ -17,11 +17,13 @@
             @Html.Raw(Model.Container)
         ).then(function(form) {
           //fill form data
-          form.submission = {
-            //data: {
-            //  firstName: 'Joe',
-            //  lastName: 'Smith'
-            //}
+            form.submission = {
+
+                @if (!String.IsNullOrEmpty(Model.SubmissionId))
+                {
+                    string submission = "data:" + Html.Raw(Model.Submission);
+                    @Html.Raw(submission);
+                }
           };
 
           // Register for the submit event to get the completed submission.

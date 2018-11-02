@@ -81,6 +81,47 @@ namespace AdvancedForms.Controllers
 
         }
 
+        [Route("AdvancedForms/{alias}/Edit/{id}")]
+        public async Task<IActionResult> Edit(string alias, string id)
+        {
+            if (String.IsNullOrWhiteSpace(alias))
+            {
+                await Index();
+            }
+            else if (String.IsNullOrWhiteSpace(id))
+            {
+                await Display(alias);
+            }
+
+            var contentItemId = await _contentAliasManager.GetContentItemIdAsync("slug:AdvancedForms/" + alias);
+
+            var contentItem = await _contentManager.GetAsync(contentItemId, VersionOptions.Published);
+            var subContentItem = await _contentManager.GetAsync(id, VersionOptions.Latest);
+
+            if (contentItem == null)
+            {
+                return NotFound();
+            }
+
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.SubmitForm, subContentItem))
+            {
+                return Unauthorized();
+            }
+
+            var model = new AdvancedFormViewModel
+            {
+                Id = contentItemId,
+                Title = contentItem.Content.AdvancedForm.Title,
+                Container = contentItem.Content.AdvancedForm.Container.Html,
+                Description = contentItem.Content.AdvancedForm.Description.Html,
+                Instructions = contentItem.Content.AdvancedForm.Instructions.Html,
+                SubmissionId = subContentItem.ContentItemId,
+                Submission = subContentItem.Content.AdvancedFormSubmissions.Submission.Html
+            };
+
+            return View("Display", model);
+
+        }
         [HttpPost]
         [Route("AdvancedForms/Entry")]
         public async Task<IActionResult> Entry(string submission, string title, string id)
