@@ -7777,21 +7777,6 @@
         "runtime": {
           "bin/placeholder/AdvancedForms.dll": {}
         }
-      },
-      "HCMS.News/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v2.1",
-        "dependencies": {
-          "Microsoft.AspNetCore.Mvc": "2.2.0-preview2-35157",
-          "OrchardCore.Module.Targets": "1.0.0-beta2-67846",
-          "OrchardCore.Mvc.Core": "1.0.0-beta2-67846"
-        },
-        "compile": {
-          "bin/placeholder/HCMS.News.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/HCMS.News.dll": {}
-        }
       }
     }
   },
@@ -17532,17 +17517,11 @@
       "type": "project",
       "path": "../AdvancedForms/AdvancedForms.csproj",
       "msbuildProject": "../AdvancedForms/AdvancedForms.csproj"
-    },
-    "HCMS.News/1.0.0": {
-      "type": "project",
-      "path": "../HCMS.News/HCMS.News.csproj",
-      "msbuildProject": "../HCMS.News/HCMS.News.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
       "AdvancedForms >= 1.0.0",
-      "HCMS.News >= 1.0.0",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.NETCore.App >= 2.1.0",
       "OrchardCore.Application.Cms.Targets >= 1.0.0-beta2-67846"
@@ -17580,9 +17559,6 @@
           "projectReferences": {
             "C:\\Code\\Forms\\AdvancedForms\\AdvancedForms.csproj": {
               "projectPath": "C:\\Code\\Forms\\AdvancedForms\\AdvancedForms.csproj"
-            },
-            "C:\\Code\\Forms\\HCMS.News\\HCMS.News.csproj": {
-              "projectPath": "C:\\Code\\Forms\\HCMS.News\\HCMS.News.csproj"
             }
           }
         }

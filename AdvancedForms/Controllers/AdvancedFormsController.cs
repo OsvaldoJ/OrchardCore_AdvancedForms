@@ -11,6 +11,7 @@ using AdvancedForms.ViewModels;
 using Newtonsoft.Json.Linq;
 using AdvancedForms.Models;
 using Microsoft.AspNetCore.Http;
+using AdvancedForms.Enums;
 
 namespace AdvancedForms.Controllers
 {
@@ -81,8 +82,53 @@ namespace AdvancedForms.Controllers
 
         }
 
+        [HttpPost]
+        [Route("AdvancedForms/Entry")]
+        public async Task<IActionResult> Entry(string submission, string title, string id, string container)
+        {
+            var contentItem = await _contentManager.NewAsync(_id);
+
+            if (!await _authorizationService.AuthorizeAsync(User, Permissions.SubmitForm, contentItem))
+            {
+                return Unauthorized();
+            }
+
+            var subObject = JObject.Parse(submission);
+            string guid = contentItem.ContentItemId;
+            string subTitle = title + " " + DateTime.Now.ToUniversalTime().ToString() + " " + guid; 
+            var advFormSub = new AdvancedFormSubmissions(subObject["data"].ToString(), 
+                subObject["metadata"].ToString(), subTitle, container);
+            var titlePart = new TitlePart(subTitle);
+
+            contentItem.Content.AdvancedFormSubmissions = JToken.FromObject(advFormSub);
+            contentItem.Content.TitlePart = JToken.FromObject(titlePart);
+            contentItem.Content.AutoroutePart.Path = CreatePath(title, guid);
+
+            if (!ModelState.IsValid)
+            {
+                _session.Cancel();
+                return StatusCode(StatusCodes.Status406NotAcceptable);
+            }
+
+            await _contentManager.CreateAsync(contentItem, VersionOptions.Draft);
+
+            await _contentManager.PublishAsync(contentItem);
+            return StatusCode(StatusCodes.Status201Created);  
+        }
+
         [Route("AdvancedForms/{alias}/Edit/{id}")]
         public async Task<IActionResult> Edit(string alias, string id)
+        {
+            return await ReturnView(alias, id, EntryType.Edit);
+        }
+
+        [Route("AdvancedForms/{alias}/View/{id}")]
+        public async Task<IActionResult> View(string alias, string id)
+        {
+            return await ReturnView(alias, id, EntryType.View);
+        }
+
+        private async Task<IActionResult> ReturnView(string alias, string id, EntryType entryType)
         {
             if (String.IsNullOrWhiteSpace(alias))
             {
@@ -112,45 +158,26 @@ namespace AdvancedForms.Controllers
             {
                 Id = contentItemId,
                 Title = contentItem.Content.AdvancedForm.Title,
-                Container = contentItem.Content.AdvancedForm.Container.Html,
+                Container = subContentItem.Content.AdvancedFormSubmissions.Container.Html,
                 Description = contentItem.Content.AdvancedForm.Description.Html,
                 Instructions = contentItem.Content.AdvancedForm.Instructions.Html,
                 SubmissionId = subContentItem.ContentItemId,
-                Submission = subContentItem.Content.AdvancedFormSubmissions.Submission.Html
+                Submission = subContentItem.Content.AdvancedFormSubmissions.Submission.Html,
+                EntryType = entryType
             };
 
             return View("Display", model);
 
         }
-        [HttpPost]
-        [Route("AdvancedForms/Entry")]
-        public async Task<IActionResult> Entry(string submission, string title, string id)
+
+        private string CreatePath(string title, string quid)
         {
-            var contentItem = await _contentManager.NewAsync(_id);
-
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.SubmitForm, contentItem))
+            if (!string.IsNullOrEmpty(title))
             {
-                return Unauthorized();
+                title = "AdvancedForms" + "/" + title.Replace(" ", "-") + "/View/" + quid;
             }
+            return title;
+        }
 
-            var subObject = JObject.Parse(submission);
-
-            string subTitle = title + "_" + DateTime.Now.ToUniversalTime().ToString(); 
-            var advFormSub = new AdvancedFormSubmissions(subObject["data"].ToString(), subObject["metadata"].ToString(), subTitle);
-            var titlePart = new TitlePart(subTitle);
-            contentItem.Content.AdvancedFormSubmissions = JToken.FromObject(advFormSub);
-            contentItem.Content.TitlePart = JToken.FromObject(titlePart);
-
-            if (!ModelState.IsValid)
-            {
-                _session.Cancel();
-                return StatusCode(StatusCodes.Status406NotAcceptable);
-            }
-
-            await _contentManager.CreateAsync(contentItem, VersionOptions.Draft);
-
-            await _contentManager.PublishAsync(contentItem);
-            return StatusCode(StatusCodes.Status201Created);  
-        }        
     }
 }

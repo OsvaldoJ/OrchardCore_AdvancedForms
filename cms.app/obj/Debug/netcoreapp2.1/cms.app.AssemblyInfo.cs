@@ -67,7 +67,6 @@ using System.Reflection;
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCore.Autoroute")]
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCore.Alias")]
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("AdvancedForms")]
-[assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("HCMS.News")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("cms.app")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

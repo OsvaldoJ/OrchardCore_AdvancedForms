@@ -12,59 +12,63 @@
 
 <script type='text/javascript' at="Head">
     window.onload = function() {
-        Formio.createForm(document.getElementById('formio'), 
+        Formio.createForm(document.getElementById('formio'),
             //create the form from saved data
             @Html.Raw(Model.Container)
+            @if (Model.EntryType == AdvancedForms.Enums.EntryType.View)
+            {
+                string readOnly = ",{readOnly: true, viewAsHtml: true}";
+                @Html.Raw(readOnly);
+            }
         ).then(function(form) {
-          //fill form data
-            form.submission = {
+                //fill form data
+                form.submission = {
+                    @if (!String.IsNullOrEmpty(Model.SubmissionId))
+                    {
+                        string submission = "data:" + Html.Raw(Model.Submission);
+                        @Html.Raw(submission);
+                    }
+                };
 
-                @if (!String.IsNullOrEmpty(Model.SubmissionId))
-                {
-                    string submission = "data:" + Html.Raw(Model.Submission);
-                    @Html.Raw(submission);
-                }
-          };
-
-          // Register for the submit event to get the completed submission.
-          form.on('submit', function(submission) {
-            console.log('Submission was made!', submission);
+                // Register for the submit event to get the completed submission.
+                form.on('submit', function(submission) {
+                    console.log('Submission was made!', submission);
             //window.location.replace("http://stackoverflow.com");
 
               $.ajax({
-                  url: 'Entry',
+                  url: '/AdvancedForms/Entry',
                   method: 'POST',
                   data: {
                       __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
                       submission: JSON.stringify(submission),
                       title: '@Model.Title',
-                      id: '@Model.Id'
+                      id: '@Model.Id',
+                      container: document.getElementById('Container').value
                   },
                   success: function (data) {
-                     
-                  },
+
+                        },
                   error: function (error) {
-                      var errorMsg = "Unable to Save. Try again later.";
+                            var errorMsg = "Unable to Save. Try again later.";
                       $('<div class="alert alert-danger" role="alert"></div>').text(errorMsg + error.responseText).appendTo($('#advancedForm-errors'));
-                  }
-              });
+                        }
+                    });
 
-          });
+                });
 
-          // Everytime the form changes, this will fire.
-          form.on('change', function(changed) {
-            console.log('Form was changed', changed);
-          });
-        });
+                // Everytime the form changes, this will fire.
+                form.on('change', function(changed) {
+                    console.log('Form was changed', changed);
+                });
+            });
       };
 
-       
 </script>
 
 <form enctype="multipart/form-data" asp-action="@createOrEdit" method="post" id="main"></form>
 
 <h1>@Model.Title</h1>
-    
+
 <div>
     @Html.LabelFor(model => model.Description)
     <br />

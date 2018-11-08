@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AdvancedForms\AdvancedForms.csproj" />
-    <ProjectReference Include="..\HCMS.News\HCMS.News.csproj" />
   </ItemGroup>
 
 </Project>

@@ -25,7 +25,7 @@ namespace AdvancedForms
                 .Add(T["Content"], content => content
                     .Add(T["Advanced Forms"], "6", layers => layers
                         .Permission(Permissions.ManageOwnAdvancedForms)
-                        .Action("Index", "Admin", new { area = "AdvancedForms" })
+                        .Action("Create", "Admin", new { area = "AdvancedForms" })
                         .LocalNav()
                     ));
 

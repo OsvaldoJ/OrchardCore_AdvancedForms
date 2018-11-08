@@ -22,8 +22,6 @@ C:\Code\Forms\cms.app\bin\Debug\netcoreapp2.1\cms.app.runtimeconfig.json
 C:\Code\Forms\cms.app\bin\Debug\netcoreapp2.1\cms.app.runtimeconfig.dev.json
 C:\Code\Forms\cms.app\bin\Debug\netcoreapp2.1\cms.app.dll
 C:\Code\Forms\cms.app\bin\Debug\netcoreapp2.1\cms.app.pdb
-C:\Code\Forms\cms.app\bin\Debug\netcoreapp2.1\HCMS.News.dll
-C:\Code\Forms\cms.app\bin\Debug\netcoreapp2.1\HCMS.News.pdb
 C:\Code\Forms\cms.app\obj\Debug\netcoreapp2.1\cms.app.csprojAssemblyReference.cache
 C:\Code\Forms\cms.app\obj\Debug\netcoreapp2.1\cms.app.csproj.CoreCompileInputs.cache
 C:\Code\Forms\cms.app\obj\Debug\netcoreapp2.1\cms.app.RazorAssemblyInfo.cache
