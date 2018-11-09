@@ -36,31 +36,31 @@
     };
 </script>
 
-<h1>Advanced Form Module</h1>
+<h1>@T["Advanced Form Module"]</h1>
 <br />
 
 <form enctype="multipart/form-data" asp-action="@createOrEdit" method="post" id="main"></form>
 
 <div>
-    <label asp-for="Title"> Title </label>
+    <label asp-for="Title">@T["Title"]</label>
     <input asp-for="Title" class="form-control content-preview-text content-caption-text" autofocus="autofocus" form="main" />
-    <span class="hint">The title of the form.</span>
+    <span class="hint">@T["The title of the form."]</span>
     <br />
     <br />
 </div>
 
 <div>
-    <label asp-for="Description"> Description </label>
+    <label asp-for="Description">@T["Description"]</label>
     <textarea asp-for="Description" class="form-control content-preview-text content-caption-text" form="main"></textarea>
-    <span class="hint">The Description of the form.</span>
+    <span class="hint">@T["The Description of the form."]</span>
     <br />
     <br />
 </div>
 
 <div>
-    <label asp-for="Instructions"> Instructions </label>
+    <label asp-for="Instructions">@T["Instructions"]</label>
     <textarea asp-for="Instructions" class="form-control content-preview-text content-caption-text" form="main"></textarea>
-    <span class="hint">The instructions for the form.</span>
+    <span class="hint">@T["The instructions for the form."]</span>
     <br />
     <br />
 </div>
@@ -71,7 +71,7 @@
 <br />
 <br />
 
-<button form="main" type="submit" name="submit.Publish" class="publish-button btn btn-success" value="submit.Publish">Publish</button>
+<button form="main" type="submit" name="submit.Publish" class="publish-button btn btn-success" value="submit.Publish">@T["Publish"]</button>
 
 @if (isEdit)
 {

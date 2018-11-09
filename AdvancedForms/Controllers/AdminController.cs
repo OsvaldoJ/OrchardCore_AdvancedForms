@@ -122,6 +122,7 @@ namespace AdvancedForms.Controllers
             return View(viewModel);
         }
 
+        
         public async Task<IActionResult> Edit(string contentItemId, string returnUrl)
         {
             var contentItem = await _contentManager.GetAsync(contentItemId, VersionOptions.Latest);
