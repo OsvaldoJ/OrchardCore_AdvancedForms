@@ -215,7 +215,6 @@ namespace AdvancedForms.Controllers
             var titlePart = new TitlePart(viewModel.Title);
             contentItem.Content.AdvancedForm = JToken.FromObject(advForm);
             contentItem.Content.TitlePart = JToken.FromObject(titlePart);
-            contentItem.Content.AutoroutePart = CreatePath(viewModel.Title);
             contentItem.Content.AutoroutePart.Path = CreatePath(viewModel.Title);
 
             var model = new AdvancedFormViewModel
