@@ -8,6 +8,7 @@ namespace AdvancedForms.Enums
     {
         Create = 0,
         Edit = 1, 
-        View = 2
+        View = 2,
+        Print = 3
     }
 }

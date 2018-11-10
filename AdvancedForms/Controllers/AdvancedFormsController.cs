@@ -128,6 +128,12 @@ namespace AdvancedForms.Controllers
             return await ReturnView(alias, id, EntryType.View);
         }
 
+        [Route("AdvancedForms/{alias}/Print/{id}")]
+        public async Task<IActionResult> Print(string alias, string id)
+        {
+            return await ReturnView(alias, id, EntryType.Print);
+        }
+
         private async Task<IActionResult> ReturnView(string alias, string id, EntryType entryType)
         {
             if (String.IsNullOrWhiteSpace(alias))
@@ -140,18 +146,25 @@ namespace AdvancedForms.Controllers
             }
 
             var contentItemId = await _contentAliasManager.GetContentItemIdAsync("slug:AdvancedForms/" + alias);
-
             var contentItem = await _contentManager.GetAsync(contentItemId, VersionOptions.Published);
             var subContentItem = await _contentManager.GetAsync(id, VersionOptions.Latest);
+            var viewName = entryType == EntryType.Print ? "Print" : "Display";
 
             if (contentItem == null)
             {
                 return NotFound();
             }
 
-            if (!await _authorizationService.AuthorizeAsync(User, Permissions.SubmitForm, subContentItem))
+            if (entryType == EntryType.View)
             {
-                return Unauthorized();
+                if (!await _authorizationService.AuthorizeAsync(User, Permissions.ViewContent, subContentItem))
+                {
+                    return Unauthorized();
+                }               
+            }
+            else if (!await _authorizationService.AuthorizeAsync(User, Permissions.SubmitForm, subContentItem))
+            {
+               return Unauthorized();
             }
 
             var model = new AdvancedFormViewModel
@@ -166,7 +179,7 @@ namespace AdvancedForms.Controllers
                 EntryType = entryType
             };
 
-            return View("Display", model);
+            return View(viewName, model);
 
         }
 

@@ -4,7 +4,6 @@
 <style asp-src="/AdvancedForms/Styles/formio.full.min.css"></style>
 <script asp-src="/AdvancedForms/Scripts/formio.full.min.js" at="Head" asp-name="formio.full.min"></script>
 
-
 @{
     var isEdit = !String.IsNullOrEmpty(Model.Id);
     var createOrEdit = isEdit ? "Edit" : "Create";
@@ -17,7 +16,7 @@
             @Html.Raw(Model.Container)
             @if (Model.EntryType == AdvancedForms.Enums.EntryType.View)
             {
-                string readOnly = ",{readOnly: true, viewAsHtml: true}";
+                string readOnly = ",{readOnly: true}";
                 @Html.Raw(readOnly);
             }
         ).then(function(form) {
@@ -49,26 +48,32 @@
 
                         },
                   error: function (error) {
-                            var errorMsg = "Unable to Save. Try again later.";
+                            var errorMsg = @T["'Unable to Save. Try again later.'"];
                       $('<div class="alert alert-danger" role="alert"></div>').text(errorMsg + error.responseText).appendTo($('#advancedForm-errors'));
                         }
                     });
 
                 });
-
-                // Everytime the form changes, this will fire.
-                form.on('change', function(changed) {
-                    console.log('Form was changed', changed);
-                });
             });
       };
 
+    function printButton() {
+        window.open(window.location.href.toLowerCase().replace('/edit/', '/print/').replace('/view/', '/print/'), '_blank');
+    };
 </script>
+
 
 <form enctype="multipart/form-data" asp-action="@createOrEdit" method="post" id="main"></form>
 
-<h1>@Model.Title</h1>
-
+<div>
+    <h1>
+        @Model.Title
+        @if (Model.EntryType == AdvancedForms.Enums.EntryType.View || Model.EntryType == AdvancedForms.Enums.EntryType.Edit)
+        {
+            <a class="fa fa-print" style="font-size:36px" onclick="printButton();" href="#"></a>
+        }
+    </h1>
+</div>
 <div>
     @Html.LabelFor(model => model.Description)
     <br />

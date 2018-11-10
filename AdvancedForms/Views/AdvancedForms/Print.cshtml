@@ -1,0 +1,54 @@
+﻿@model AdvancedForms.ViewModels.AdvancedFormViewModel
+
+@{
+  Layout = null;
+}
+
+<style src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></style>
+<style src="/AdvancedForms/Styles/formio.full.min.css"></style>
+<script src="/AdvancedForms/Scripts/formio.full.min.js"></script>
+
+<style>
+    .wrapper {
+        text-align: center;
+    }
+
+    .button {
+        position: absolute;
+        top: 2%;
+    }
+</style>
+
+<script type='text/javascript'>
+    window.onload = function() {
+        Formio.createForm(document.getElementById('formio'),
+            //create the form from saved data
+            @Html.Raw(Model.Container)
+           ,{readOnly: true, viewAsHtml: true}
+        ).then(function(form) {
+            //fill form data
+            form.submission = {
+                @if (!String.IsNullOrEmpty(Model.SubmissionId))
+                {
+                    string submission = "data:" + Html.Raw(Model.Submission);
+                    @Html.Raw(submission);
+                }
+            };
+        });
+    };
+
+    function screenPrint() {
+        document.getElementById('printButton').style.visibility = 'hidden';
+        window.print();
+    };
+</script>
+
+<div class="wrapper">
+    <input type="button" id="printButton" value="Print" onclick="screenPrint();" />  
+</div>
+
+<h1>@Model.Title</h1>
+
+<div id='formio'></div>
+
+
