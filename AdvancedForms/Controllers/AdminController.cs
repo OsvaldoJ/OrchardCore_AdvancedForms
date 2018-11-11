@@ -119,7 +119,8 @@ namespace AdvancedForms.Controllers
             await _contentManager.CreateAsync(contentItem, VersionOptions.Draft);
            
             await conditionallyPublish(contentItem);
-            return View(viewModel);
+
+            return RedirectToAction("Edit", new RouteValueDictionary { { "ContentItemId", contentItem.ContentItemId } });
         }
 
         
@@ -140,6 +141,7 @@ namespace AdvancedForms.Controllers
             var model = new AdvancedFormViewModel
             {
                 Id = contentItemId,
+                EntryType = Enums.EntryType.Edit,
                 Title = contentItem.Content.AdvancedForm.Title,
                 Container = contentItem.Content.AdvancedForm.Container.Html,
                 Description = contentItem.Content.AdvancedForm.Description.Html,

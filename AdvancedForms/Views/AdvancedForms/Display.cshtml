@@ -32,9 +32,8 @@
                 // Register for the submit event to get the completed submission.
                 form.on('submit', function(submission) {
                     console.log('Submission was made!', submission);
-            //window.location.replace("http://stackoverflow.com");
 
-              $.ajax({
+                $.ajax({
                   url: '/AdvancedForms/Entry',
                   method: 'POST',
                   data: {
@@ -45,8 +44,8 @@
                       container: document.getElementById('Container').value
                   },
                   success: function (data) {
-
-                        },
+                      window.location.replace("/submission-confirmation");
+                 },
                   error: function (error) {
                             var errorMsg = @T["'Unable to Save. Try again later.'"];
                       $('<div class="alert alert-danger" role="alert"></div>').text(errorMsg + error.responseText).appendTo($('#advancedForm-errors'));
